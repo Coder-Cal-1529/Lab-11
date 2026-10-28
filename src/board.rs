@@ -3,6 +3,7 @@ use crate::data::ShipSpec;
 use rand::RngExt;
 use rand::rngs::StdRng;
 use std::fmt;
+use crate::board::fmt::Error;
 
 pub const SIZE: usize = 10;
 
@@ -43,7 +44,12 @@ pub enum CoordError {
 // Study DataError in data.rs: it is a finished example of this impl.
 impl fmt::Display for CoordError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "TODO: {self:?}")
+        match self{
+		Error::Badformat => write!(f,"Type a column letter and a row number, like B7"),
+		Error::ColumnOutOfRange(x) => write!(f,"Column {x} is off the board (A-J)"),
+		Error::RowOutOfRange(n) => write!(f,"row {n} is off the board (1-10)"),
+		Error::Io(e) => write!(f,"Unexpected Error: {e}"),
+	}
     }
 }
 
